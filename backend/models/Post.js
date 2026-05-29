@@ -50,12 +50,11 @@ const postSchema = new mongoose.Schema({
 postSchema.plugin(mongoosePaginate);
 
 // Extract hashtags before saving
-postSchema.pre('save', function(next) {
+postSchema.pre('save', async function() {
   if (this.content) {
     const hashtags = this.content.match(/#[a-zA-Z0-9_]+/g);
     this.hashtags = hashtags ? hashtags.map(h => h.toLowerCase()) : [];
   }
-  next();
 });
 
 module.exports = mongoose.model('Post', postSchema);
